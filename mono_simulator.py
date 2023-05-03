@@ -31,7 +31,7 @@ actions = np.linspace(PN - XI*(PM-PN), PM + XI*(PM-PN), num=M)
     np.linspace(PN - XI*(PM-PN), PM + XI*(PM-PN), num=M)
 ])"""
 
-PLAYER_TYPE = 0
+PLAYER_TYPE = 1
 if PLAYER_TYPE == 1:
     log_prefix = f"./log/run_mono_Greedy_{ALPHA}_{BETA}_{GAMMA}_{HORIZON}_" + datetime.now().strftime("%Y%m%d_%H%M%S")
     player_0 = AdaptGreedyPlayer(
@@ -71,8 +71,8 @@ monopoly_game = MonopolyGame(
     c = [1, 1]
 )
 
-# Optional: Q-table initialized to Q^*.
-'''print(" "*5 + "|" + "".join([f"a_{a}".rjust(8) for a in range(len(actions))]))
+# Default: Q-table initialized to Q^*.
+print(" "*5 + "|" + "".join([f"a_{a}".rjust(8) for a in range(len(actions))]))
 print("-"*6 + " -------"*len(actions))
 print("  Q* |", end="")
 for a in range(len(actions)):
@@ -86,7 +86,7 @@ for a in range(len(actions)):
         for s_1 in range(len(actions)):
             player_0.Q_table[(s_0,s_1)][a] = r_init
             player_1.Q_table[(s_0,s_1)][a] = r_init
-print()'''
+print()
 # Optional: Q-table initialized to random.
 '''for s_0 in range(len(actions)):
     for s_1 in range(len(actions)):

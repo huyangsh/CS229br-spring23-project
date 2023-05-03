@@ -5,7 +5,7 @@ import torch
 import matplotlib.pyplot as plt
 
 from game import MatrixGame
-from player import EpsGreedyPlayer, LSTMPlayer, LSTMBatchPlayer
+from player import EpsGreedyPlayer, LSTMPlayer, LSTMBatchPlayer, TitForTatPlayer
 
 
 # Configurations.
@@ -15,12 +15,12 @@ GAMMA   = 0.9
 BETA    = 1e-4
 EPS     = 0.05
 
-HORIZON     = 8
+HORIZON     = 32
 HIDDEN_SIZE = 16
 NUM_LAYERS  = 1
 LR          = 1e-2
 LR_DECAY    = 0.9995
-BATCH_SIZE  = 32
+BATCH_SIZE  = 1
 
 T           = 1000000
 LOG_FREQ    = 50000
@@ -35,7 +35,7 @@ print(device)
 # ======================================
 actions = np.array([0, 1])
 
-PLAYER_TYPE = 0
+PLAYER_TYPE = 4
 if PLAYER_TYPE == 1:
     log_prefix = f"./log/run_PD_Greedy_{ALPHA}_{EPS}_{GAMMA}_{HORIZON}_" + datetime.now().strftime("%Y%m%d_%H%M%S")
     player_0 = EpsGreedyPlayer(
@@ -75,6 +75,21 @@ elif PLAYER_TYPE == 3:
         alpha=ALPHA, beta=BETA, gamma=GAMMA, horizon=HORIZON,
         hidden_size=HIDDEN_SIZE, num_layers=NUM_LAYERS,
         lr=LR, lr_decay=LR_DECAY, device=device, batch_size=BATCH_SIZE, log_freq=LOG_FREQ
+    )
+elif PLAYER_TYPE == 4:
+    PERIOD   = 2
+    T        = 100000
+    LOG_FREQ = 50
+
+    log_prefix = f"./log/run_PD_LSTM_tit_{ALPHA}_{HORIZON}_{HIDDEN_SIZE}_{NUM_LAYERS}_{PERIOD}_" + datetime.now().strftime("%Y%m%d_%H%M%S")
+    player_0 = LSTMPlayer(
+        pid=0, actions=actions,
+        alpha=ALPHA, beta=BETA, gamma=GAMMA, horizon=HORIZON,
+        hidden_size=HIDDEN_SIZE, num_layers=NUM_LAYERS,
+        lr=LR, lr_decay=LR_DECAY, device=device, log_freq=LOG_FREQ
+    )
+    player_1 = TitForTatPlayer(
+        pid=1, C_id=0, C_action=0, D_id=1, D_action=1, period=PERIOD
     )
 else:
     assert False, "Invalid player type."
@@ -127,15 +142,15 @@ for s in states:
     i = i + 1
 
     ax = fig.add_subplot(2,len(states),i)
-    y_0 = np.array([x[s][0] for x in player_0.log["Q_table"]])
-    y_1 = np.array([x[s][1] for x in player_0.log["Q_table"]])
+    y_0 = np.array([x[s][0] if s in x else 0 for x in player_0.log["Q_table"]])
+    y_1 = np.array([x[s][1] if s in x else 0 for x in player_0.log["Q_table"]])
     ax.plot(x, y_0, label="C")
     ax.plot(x, y_1, label="D")
     ax.legend(loc="lower left")
 
     ax = fig.add_subplot(2,len(states),len(states)+i)
-    y_0 = np.array([x[s][0] for x in player_1.log["Q_table"]])
-    y_1 = np.array([x[s][1] for x in player_1.log["Q_table"]])
+    y_0 = np.array([x[s][0] if s in x else 0 for x in player_1.log["Q_table"]])
+    y_1 = np.array([x[s][1] if s in x else 0 for x in player_1.log["Q_table"]])
     ax.plot(x, y_0, label="C")
     ax.plot(x, y_1, label="D")
     ax.legend(loc="lower left")

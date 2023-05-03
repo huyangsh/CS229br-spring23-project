@@ -116,10 +116,10 @@ class LSTMPlayer(Player):
             return None
         
         if full:
-            return self.log["Q_table"]
+            return (self.log["Q_table"], self.log["loss"])
         else:
             idx_start = (t+1-period) // self.log_freq
-            return self.log["Q_table"][idx_start:]
+            return (self.log["Q_table"][idx_start:], self.log["loss"][idx_start:])
     
     def get_print_data(self):
         msg = ""

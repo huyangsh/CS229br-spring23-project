@@ -30,7 +30,7 @@ class TitForTatPlayer(Player):
             assert False, f"Invalid action {i} for a ThreatPlayer instance."
 
     def play(self, t, state, get_history):
-        if state[1-self.pid] == self.D_id:
+        if state and state[1-self.pid] == self.D_id:
             self.threat_status = self.period
         
         if self.threat_status > 0:
