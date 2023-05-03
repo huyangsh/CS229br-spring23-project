@@ -60,7 +60,7 @@ class MonopolyGame(Game):
         _print_redirect(f, f"#exploration = {int(self.log['explore'].sum())}\n")
 
         _print_redirect(f, f"avg_reward = ({mean(self.log['reward_0']):.4f}, {mean(self.log['reward_1']):.4f})")
-        # tqdm.write(f"avg_last_100_reward = ({mean(self.log['reward_0'][:-100]):.4f}, {mean(self.log['reward_1'][:-100]):.4f})")
+        # tqdm.write(f"avg_last_100_rewards = ({mean(self.log['reward_0'][:-100]):.4f}, {mean(self.log['reward_1'][:-100]):.4f})")
         
         msg = "last actions ="
         for i in range(10):
@@ -77,7 +77,11 @@ class MonopolyGame(Game):
     
     def _get_visit_str(self, visit_count, title):
         msg = ""
-        visit_freq = visit_count / visit_count.sum() * 10000
+        tot_visit = visit_count.sum()
+        if tot_visit > 0:
+            visit_freq = visit_count / visit_count.sum() * 10000
+        else:
+            visit_freq = visit_count
 
         msg += f"{title} |".rjust(6)
         for a1 in range(self.players[1].num_actions):

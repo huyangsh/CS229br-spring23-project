@@ -40,7 +40,7 @@ class AdaptGreedyPlayer(Player):
             action = random.choice(range(self.num_actions))
         else:    
             # Take the eps-greedy action.
-            eps = max(exp(-self.beta*t), 0.01)
+            eps = max(exp(-self.beta*t), 0.01)  # Unbounded in original paper: exp(-self.beta*t).
             if (random.random() < eps):
                 action = random.choice(range(self.num_actions))
                 self.is_random = True
