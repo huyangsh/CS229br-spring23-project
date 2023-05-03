@@ -27,7 +27,7 @@ device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cp
 print(device)
 
 actions = np.array([0, 1])
-PLAYER_TYPE = 3
+PLAYER_TYPE = 2
 if PLAYER_TYPE == 1:
     log_prefix = f"./log/run_PD_Greedy_{ALPHA}_{EPS}_{GAMMA}_{HORIZON}_" + datetime.now().strftime("%Y%m%d_%H%M%S")
     player_0 = EpsGreedyPlayer(
