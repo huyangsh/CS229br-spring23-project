@@ -32,7 +32,7 @@ print(actions)
     np.linspace(PN - XI*(PM-PN), PM + XI*(PM-PN), num=M)
 ])"""
 
-PLAYER_TYPE = 1
+PLAYER_TYPE = 0
 if PLAYER_TYPE == 1:
     log_prefix = f"./log/run_mono_Greedy_{ALPHA}_{BETA}_{GAMMA}_{HORIZON}_" + datetime.now().strftime("%Y%m%d_%H%M%S")
     player_0 = AdaptGreedyPlayer(
