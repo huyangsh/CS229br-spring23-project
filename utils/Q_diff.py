@@ -12,7 +12,7 @@ def Q_diff(Q1, Q2):
         diff += np.linalg.norm(Q1[key] - Q2[key]) ** 2
     return np.sqrt(diff)
 
-log_prefix = "./log/PD_LSTM/run_PD_LSTM_0.1_8_16_1_20230502_200312"
+log_prefix = "./log/mono_paper_unbounded/run_mono_Greedy_0.1_2e-05_0.95_1_20230502_235350"
 with open(log_prefix + ".pkl", "rb") as f:
     data = pkl.load(f)
 Q_tables_0 = data["player_0"]

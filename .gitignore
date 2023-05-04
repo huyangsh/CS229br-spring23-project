@@ -4,3 +4,4 @@ __pycache__/
 
 # Log files.
 /log/
+/local_utils/

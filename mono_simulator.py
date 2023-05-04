@@ -26,6 +26,7 @@ XI      = 0.1
 PN      = 1.61338
 PM      = 1.73153
 actions = np.linspace(PN - XI*(PM-PN), PM + XI*(PM-PN), num=M)
+print(actions)
 """actions = np.hstack([
     np.linspace(0, PN - XI*(PM-PN), num=100),
     np.linspace(PN - XI*(PM-PN), PM + XI*(PM-PN), num=M)
